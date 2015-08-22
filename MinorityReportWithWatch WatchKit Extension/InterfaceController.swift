@@ -11,6 +11,7 @@ import WatchKit
 import Foundation
 
 import CoreMotion
+import WatchConnectivity
 
 class InterfaceController: WKInterfaceController {
 
@@ -21,6 +22,8 @@ class InterfaceController: WKInterfaceController {
     @IBOutlet var statusLabel: WKInterfaceLabel!
     
     
+    let session : WCSession?
+    
     let manager : CMMotionManager
     let motionQueue : NSOperationQueue
     override init() {
@@ -29,6 +32,12 @@ class InterfaceController: WKInterfaceController {
 
         manager = CMMotionManager()
         manager.accelerometerUpdateInterval = 0.1
+        
+        if(WCSession.isSupported()) {
+            session =  WCSession.defaultSession()
+        } else {
+            session = nil
+        }
         
     }
     
@@ -66,6 +75,19 @@ class InterfaceController: WKInterfaceController {
                 self.xLabel.setText("x: ".stringByAppendingString(String(a.x)))
                 self.yLabel.setText("y: ".stringByAppendingString(String(a.y)))
                 self.zLabel.setText("z: ".stringByAppendingString(String(a.z)))
+                
+                if(WCSession.isSupported()) {
+                    
+                    // create a message dictionary to send
+                    let message = ["x" : a.x, "y" : a.y, "z" : a.z]
+                    if let availableSession = self.session {
+                        availableSession.sendMessage(message, replyHandler: { (content:[String : AnyObject]) -> Void in
+                            print("Our counterpart sent something back. This is optional")
+                            }, errorHandler: {  (error ) -> Void in
+                                print("We got an error from our paired device : " + error.domain)
+                        })
+                    }
+                }
             }
         }
 
