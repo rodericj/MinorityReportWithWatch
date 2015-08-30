@@ -15,20 +15,50 @@
                                 <action selector="sendDummyData" destination="AgC-eL-Hgc" id="mih-YN-sWc"/>
                             </connections>
                         </button>
+                        <separator alignment="left" id="vHq-Yo-HoJ"/>
                         <button width="1" alignment="left" title="start/stop" id="YjJ-ww-8Ru">
                             <connections>
                                 <action selector="startStopButtonTapped" destination="AgC-eL-Hgc" id="rT6-vg-GFJ"/>
                             </connections>
                         </button>
-                        <label alignment="left" text="Label" id="ttZ-TU-ZVO"/>
-                        <label alignment="left" text="Label" id="mGb-jT-mon"/>
-                        <label alignment="left" text="Label" id="eAp-g9-sCq"/>
-                        <label alignment="left" text="Label" id="ac7-IK-vTf">
-                            <color key="textColor" red="0.2827772556" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <label alignment="left" text="x label" id="ttZ-TU-ZVO"/>
+                        <label alignment="left" text="y label" id="mGb-jT-mon"/>
+                        <label alignment="left" text="z label" id="eAp-g9-sCq"/>
+                        <switch width="1" alignment="left" title="Send Data" id="EfT-8h-yjh">
+                            <connections>
+                                <action selector="switchChange:" destination="AgC-eL-Hgc" id="kSC-K8-OX9"/>
+                            </connections>
+                        </switch>
+                        <slider width="1" alignment="left" value="0.5" steps="10" id="gho-29-CWx">
+                            <connections>
+                                <action selector="sliderChange:" destination="AgC-eL-Hgc" id="24Y-e0-Atl"/>
+                            </connections>
+                        </slider>
+                        <separator alignment="left" id="f3X-w1-Ieq"/>
+                        <label alignment="left" text="error label" id="ac7-IK-vTf">
+                            <color key="textColor" red="1" green="0.1410829431" blue="0.30172343169999999" alpha="1" colorSpace="calibratedRGB"/>
                         </label>
+                        <button width="1" alignment="left" title="re-activate session" id="mkU-fZ-Spb"/>
                         <label alignment="left" text="reachable" id="6EP-y7-GlS"/>
+                        <button width="1" alignment="left" title="start/stop range test" id="A3Z-lN-VAy">
+                            <connections>
+                                <action selector="startStopRangeTest" destination="AgC-eL-Hgc" id="hR5-rc-2hD"/>
+                            </connections>
+                        </button>
+                        <label alignment="left" text="xmax" id="8fP-5u-4pO"/>
+                        <label alignment="left" text="xmin" id="Kyu-5c-LmE"/>
+                        <label alignment="left" text="ymax" id="amB-Bj-CCQ"/>
+                        <label alignment="left" text="ymin" id="1od-wQ-Kbe"/>
+                        <label alignment="left" text="zmax" id="LcK-k3-d2G"/>
+                        <label alignment="left" text="zmin" id="EDg-1r-KLZ"/>
                     </items>
                     <connections>
+                        <outlet property="maxXLabel" destination="8fP-5u-4pO" id="9BL-8G-IuM"/>
+                        <outlet property="maxYLabel" destination="amB-Bj-CCQ" id="3TK-W9-BNL"/>
+                        <outlet property="maxZLabel" destination="LcK-k3-d2G" id="Y12-Fk-Sq9"/>
+                        <outlet property="minXLabel" destination="Kyu-5c-LmE" id="7PL-dq-j3F"/>
+                        <outlet property="minYLabel" destination="1od-wQ-Kbe" id="nKe-d7-mzG"/>
+                        <outlet property="minZLabel" destination="EDg-1r-KLZ" id="u1e-Jf-ypK"/>
                         <outlet property="reachableLabel" destination="6EP-y7-GlS" id="CVx-iA-bFf"/>
                         <outlet property="statusLabel" destination="ac7-IK-vTf" id="f5i-gS-geI"/>
                         <outlet property="xLabel" destination="ttZ-TU-ZVO" id="i42-vF-BYj"/>

@@ -17,122 +17,97 @@ class ViewController: UIViewController, WCSessionDelegate {
     @IBOutlet weak var yLabel: UILabel!
     @IBOutlet weak var zLabel: UILabel!
     
-    @IBOutlet weak var rotationXLabel: UILabel!
-    @IBOutlet weak var rotationYLabel: UILabel!
-    @IBOutlet weak var rotationZLabel: UILabel!
-    
     @IBOutlet weak var isPairedLabel: UILabel!
     @IBOutlet weak var isAppInstalledLabel: UILabel!
     @IBOutlet weak var isConnectedLabel: UILabel!
+    
+    @IBOutlet weak var delayLabel: UILabel!
     
     let session : WCSession
     
     required init?(coder aDecoder: NSCoder) {
         session = WCSession.defaultSession()
-        print("init")
         super.init(coder: aDecoder)
     }
-    
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
         
-//        UIView.animateWithDuration(1) { () -> Void in
-//            self.emojiLabel.transform = CGAffineTransformScale(self.emojiLabel.transform, 0.3, 0.3)
-//        }
-        
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("view did load")
         if(WCSession.isSupported()) {
-            print("wcsession is supported")
             self.session.delegate = self
             self.session.activateSession()
             
-            self.isAppInstalledButtonTapped(self)
-            self.isConnectedButtonTapped(self)
-            self.isPairedButtonTapped(self)
-        
+            self.isAppInstalledLabelUpdate()
+            self.isConnectedLabelUpdate()
+            self.isPairedLabelUpdate()
         }
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
     func sessionReachabilityDidChange(session: WCSession) {
-        print("session reachability changed")
+        self.isAppInstalledLabelUpdate()
+        self.isConnectedLabelUpdate()
+        self.isPairedLabelUpdate()
+        
     }
+    
     func sessionWatchStateDidChange(session: WCSession) {
         print("watch state changed %@", session.paired)
 
     }
     func session(session: WCSession, didReceiveMessage message: [String : AnyObject], replyHandler: ([String : AnyObject]) -> Void) {
-        print("We got something on the phone here")
         print(message)
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            
-            if let xText = message["x"] as! Float? {
-                
-                // Change the title on the main thread
-                self.xLabel.text = String(xText)
+            print("We got something on the phone here")
+            print(message)
+
+            if let xValue = message["x"] as! Float? {
+                self.xLabel.text = "x: ".stringByAppendingString(String(xValue))
+                if (xValue > 1) {
+                    self.emojiLabel.text = "UP"
+                } else if (xValue < -1) {
+                    self.emojiLabel.text = "DOWN"
+                }
             }
             
-            if let yText = message["y"] as! Float? {
-                
-                // Change the title on the main thread
-                self.yLabel.text = String(yText)
+            if let yValue = message["y"] as! Float? {
+                self.yLabel.text = "y: ".stringByAppendingString(String(yValue))
             }
-            if let zText = message["z"] as! Float? {
-                
-                // Change the title on the main thread
-                self.zLabel.text = String(zText)
+            if let zValue = message["z"] as! Float? {
+                self.zLabel.text = "z: ".stringByAppendingString(String(zValue))
             }
             
-            if let xText = message["rotation x"] as! Float? {
-                
-                // Change the title on the main thread
-                self.rotationXLabel.text = String(xText)
+            if let timeSent = message["time"] as! NSTimeInterval? {
+                let delta = NSDate().timeIntervalSince1970 - timeSent
+                self.delayLabel.text = String(delta)
+            } else {
+                self.delayLabel.text = String(message)
+
             }
-            
-            if let yText = message["rotation y"] as! Float? {
-                
-                // Change the title on the main thread
-                self.rotationYLabel.text = String(yText)
-            }
-            if let zText = message["rotation z"] as! Float? {
-                
-                // Change the title on the main thread
-                self.rotationZLabel.text = String(zText)
-            }
-            
         })
-        
-        
     }
     
-    @IBAction func isAppInstalledButtonTapped(sender: AnyObject) {
+    
+    func isAppInstalledLabelUpdate() {
         if(self.session.watchAppInstalled) {
-            self.isAppInstalledLabel.text = "installed\non watch"
+            self.isAppInstalledLabel.text = "app is\non ⌚️"
         } else {
-            self.isAppInstalledLabel.text = "not installed\non watch"
+            self.isAppInstalledLabel.text = "app is\nnot on ⌚️"
         }
     }
-    @IBAction func isConnectedButtonTapped(sender: AnyObject) {
+    
+    func isConnectedLabelUpdate() {
         if(self.session.reachable) {
-            self.isConnectedLabel.text = "watch is\nreachable"
+            self.isConnectedLabel.text = "⌚️ reachable"
         } else {
-            self.isConnectedLabel.text = "watch is\nnot reachable"
+            self.isConnectedLabel.text = "⌚️ not \nreachable"
         }
 
     }
-    @IBAction func isPairedButtonTapped(sender: AnyObject) {
+    
+    func isPairedLabelUpdate() {
         if(self.session.paired) {
-            self.isPairedLabel.text = "paired"
+            self.isPairedLabel.text = "⌚️ and 📱 \nare 🍐d"
         } else {
-            self.isPairedLabel.text = "not paired"
+            self.isPairedLabel.text = "🚨 ⌚️ and 📱\nare not 🍐d"
         }
     }
     
