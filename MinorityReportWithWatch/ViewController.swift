@@ -29,7 +29,7 @@ class ViewController: UIViewController, WCSessionDelegate {
         session = WCSession.defaultSession()
         super.init(coder: aDecoder)
     }
-        
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         if(WCSession.isSupported()) {
@@ -65,6 +65,8 @@ class ViewController: UIViewController, WCSessionDelegate {
                     self.emojiLabel.text = "UP"
                 } else if (xValue < -1) {
                     self.emojiLabel.text = "DOWN"
+                } else {
+                    self.emojiLabel.text = "😈"
                 }
             }
             
@@ -75,6 +77,13 @@ class ViewController: UIViewController, WCSessionDelegate {
                 self.zLabel.text = "z: ".stringByAppendingString(String(zValue))
             }
             
+            if let xValue = message["x"] as! Float? {
+                if let yValue = message["y"] as! Float? {
+                    
+                    let rotation = atan2(Double(xValue), Double(yValue)) - M_PI
+                    self.emojiLabel.transform = CGAffineTransformMakeRotation(-CGFloat(rotation))
+                }
+            }
             if let timeSent = message["time"] as! NSTimeInterval? {
                 let delta = NSDate().timeIntervalSince1970 - timeSent
                 self.delayLabel.text = String(delta)
