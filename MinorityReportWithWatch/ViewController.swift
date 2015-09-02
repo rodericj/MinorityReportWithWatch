@@ -23,6 +23,8 @@ class ViewController: UIViewController, WCSessionDelegate {
     
     @IBOutlet weak var delayLabel: UILabel!
     
+    @IBOutlet weak var numeratorSelector: UISegmentedControl!
+    @IBOutlet weak var denominatorSelector: UISegmentedControl!
     let session : WCSession
     
     required init?(coder aDecoder: NSCoder) {
@@ -43,33 +45,31 @@ class ViewController: UIViewController, WCSessionDelegate {
     }
 
     func sessionReachabilityDidChange(session: WCSession) {
-        self.isAppInstalledLabelUpdate()
-        self.isConnectedLabelUpdate()
-        self.isPairedLabelUpdate()
-        
+        // Aha, this may not be coming back on the main thread. Fix that
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            self.isAppInstalledLabelUpdate()
+            self.isConnectedLabelUpdate()
+            self.isPairedLabelUpdate()
+        })
     }
     
     func sessionWatchStateDidChange(session: WCSession) {
         print("watch state changed %@", session.paired)
 
     }
+    func session(session: WCSession, didReceiveApplicationContext applicationContext: [String : AnyObject]) {
+        processMessage(applicationContext)
+    }
+    
     func session(session: WCSession, didReceiveMessage message: [String : AnyObject], replyHandler: ([String : AnyObject]) -> Void) {
-        print(message)
+        processMessage(message)
+    }
+    
+    func processMessage(message : [String : AnyObject]) {
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            print("We got something on the phone here")
-            print(message)
-
             if let xValue = message["x"] as! Float? {
                 self.xLabel.text = "x: ".stringByAppendingString(String(xValue))
-                if (xValue > 1) {
-                    self.emojiLabel.text = "UP"
-                } else if (xValue < -1) {
-                    self.emojiLabel.text = "DOWN"
-                } else {
-                    self.emojiLabel.text = "😈"
-                }
             }
-            
             if let yValue = message["y"] as! Float? {
                 self.yLabel.text = "y: ".stringByAppendingString(String(yValue))
             }
@@ -77,11 +77,19 @@ class ViewController: UIViewController, WCSessionDelegate {
                 self.zLabel.text = "z: ".stringByAppendingString(String(zValue))
             }
             
-            if let xValue = message["x"] as! Float? {
-                if let yValue = message["y"] as! Float? {
-                    
-                    let rotation = atan2(Double(xValue), Double(yValue)) - M_PI
-                    self.emojiLabel.transform = CGAffineTransformMakeRotation(-CGFloat(rotation))
+            let numeratorString = self.numeratorSelector.titleForSegmentAtIndex(self.numeratorSelector.selectedSegmentIndex)
+            if let numeratorValue = message[numeratorString!] as! Float? {
+                let denominatorString = self.denominatorSelector.titleForSegmentAtIndex(self.denominatorSelector.selectedSegmentIndex)
+                
+                if let denominatorValue = message[denominatorString!] as! Float? {
+                    if let rate = message["rate"] as! NSTimeInterval? {
+                        let shorterRate = rate - 0.1
+                        UIView.animateWithDuration(shorterRate, delay: 0, options: .BeginFromCurrentState, animations: { () -> Void in
+                            let rotation = atan2(Double(numeratorValue), Double(denominatorValue)) - M_PI
+                            print("rotation is " + String(rotation))
+                            self.emojiLabel.transform = CGAffineTransformMakeRotation(-CGFloat(rotation))
+                            }, completion: nil)
+                    }
                 }
             }
             if let timeSent = message["time"] as! NSTimeInterval? {
@@ -89,11 +97,10 @@ class ViewController: UIViewController, WCSessionDelegate {
                 self.delayLabel.text = String(delta)
             } else {
                 self.delayLabel.text = String(message)
-
+                
             }
         })
     }
-    
     
     func isAppInstalledLabelUpdate() {
         if(self.session.watchAppInstalled) {
@@ -104,6 +111,9 @@ class ViewController: UIViewController, WCSessionDelegate {
     }
     
     func isConnectedLabelUpdate() {
+        if (!NSThread.isMainThread()) {
+            print("updating a label on not the main thread")
+        }
         if(self.session.reachable) {
             self.isConnectedLabel.text = "⌚️ reachable"
         } else {

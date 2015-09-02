@@ -21,24 +21,34 @@
                                 <action selector="startStopButtonTapped" destination="AgC-eL-Hgc" id="rT6-vg-GFJ"/>
                             </connections>
                         </button>
-                        <label alignment="left" text="x label" id="ttZ-TU-ZVO"/>
-                        <label alignment="left" text="y label" id="mGb-jT-mon"/>
-                        <label alignment="left" text="z label" id="eAp-g9-sCq"/>
+                        <label alignment="left" text="x:" id="ttZ-TU-ZVO"/>
+                        <label alignment="left" text="y:" id="mGb-jT-mon"/>
+                        <label alignment="left" text="z:" id="eAp-g9-sCq"/>
                         <switch width="1" alignment="left" title="Send Data" id="EfT-8h-yjh">
                             <connections>
-                                <action selector="switchChange:" destination="AgC-eL-Hgc" id="kSC-K8-OX9"/>
+                                <action selector="sendDataSwitchChanged:" destination="AgC-eL-Hgc" id="ixY-65-V5q"/>
+                            </connections>
+                        </switch>
+                        <switch width="1" alignment="left" title="data as context" id="gyw-zX-zBd">
+                            <connections>
+                                <action selector="dataAsContextSwitchChanged:" destination="AgC-eL-Hgc" id="09q-7s-5Gh"/>
                             </connections>
                         </switch>
                         <slider width="1" alignment="left" value="0.5" steps="10" id="gho-29-CWx">
                             <connections>
-                                <action selector="sliderChange:" destination="AgC-eL-Hgc" id="24Y-e0-Atl"/>
+                                <action selector="sliderChange:" destination="AgC-eL-Hgc" id="ksU-wP-rnb"/>
                             </connections>
                         </slider>
+                        <label alignment="left" text="rate:" id="Ch7-dZ-aTN"/>
                         <separator alignment="left" id="f3X-w1-Ieq"/>
                         <label alignment="left" text="error label" id="ac7-IK-vTf">
                             <color key="textColor" red="1" green="0.1410829431" blue="0.30172343169999999" alpha="1" colorSpace="calibratedRGB"/>
                         </label>
-                        <button width="1" alignment="left" title="re-activate session" id="mkU-fZ-Spb"/>
+                        <button width="1" alignment="left" title="re-activate session" id="mkU-fZ-Spb">
+                            <connections>
+                                <action selector="reactivateSession" destination="AgC-eL-Hgc" id="C6c-3t-EBq"/>
+                            </connections>
+                        </button>
                         <label alignment="left" text="reachable" id="6EP-y7-GlS"/>
                         <button width="1" alignment="left" title="start/stop range test" id="A3Z-lN-VAy">
                             <connections>
@@ -59,6 +69,8 @@
                         <outlet property="minXLabel" destination="Kyu-5c-LmE" id="7PL-dq-j3F"/>
                         <outlet property="minYLabel" destination="1od-wQ-Kbe" id="nKe-d7-mzG"/>
                         <outlet property="minZLabel" destination="EDg-1r-KLZ" id="u1e-Jf-ypK"/>
+                        <outlet property="rateLabel" destination="Ch7-dZ-aTN" id="Doo-4R-zaS"/>
+                        <outlet property="rateSlider" destination="gho-29-CWx" id="wkv-7F-n8a"/>
                         <outlet property="reachableLabel" destination="6EP-y7-GlS" id="CVx-iA-bFf"/>
                         <outlet property="statusLabel" destination="ac7-IK-vTf" id="f5i-gS-geI"/>
                         <outlet property="xLabel" destination="ttZ-TU-ZVO" id="i42-vF-BYj"/>

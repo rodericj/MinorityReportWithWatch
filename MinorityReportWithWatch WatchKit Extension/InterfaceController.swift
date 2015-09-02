@@ -33,7 +33,11 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     @IBOutlet var statusLabel: WKInterfaceLabel!
     @IBOutlet var reachableLabel: WKInterfaceLabel!
     
+    @IBOutlet var rateSlider: WKInterfaceSlider!
+    @IBOutlet var rateLabel: WKInterfaceLabel!
+    
     var sendDataSwitchState : Bool
+    var dataAsContextState : Bool
     var runningRangeTest : Bool
     
     var maxX : Double
@@ -71,6 +75,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         self.minZ = 100
         
         self.sendDataSwitchState = false
+        self.dataAsContextState = false
         
         // I need to access self after this
         super.init()
@@ -81,7 +86,6 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
 
         }
     }
-    
     
     func updateLabel() {
         if (self.session.reachable) {
@@ -95,12 +99,17 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         session.activateSession()
     }
     
-    @IBAction func switchChange(value: Bool) {
+    @IBAction func dataAsContextSwitchChanged(value: Bool) {
+        self.dataAsContextState = value;
+    }
+    
+    @IBAction func sendDataSwitchChanged(value: Bool) {
         self.sendDataSwitchState = value
     }
     
     @IBAction func sliderChange(value: Float) {
         manager.accelerometerUpdateInterval = Double(value)
+        self.rateLabel.setText(String(value))
     }
     
     @IBAction func sendDummyData() {
@@ -161,7 +170,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
                         // create a message dictionary to send
                         
                         if (self.sendDataSwitchState) {
-                            let message = ["x" : a.x, "y" : a.y, "z" : a.z, "time" : NSDate().timeIntervalSince1970]
+                            let message = ["x" : a.x, "y" : a.y, "z" : a.z, "time" : NSDate().timeIntervalSince1970, "rate": self.manager.accelerometerUpdateInterval]
                             self.sendMessage(message)
                         }
                     }
@@ -203,15 +212,25 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     
     func sendMessage(message : Dictionary<String, Double>) {
         if let availableSession = self.session {
-            availableSession.sendMessage(message, replyHandler: { (content:[String : AnyObject]) -> Void in
-                print("Our counterpart sent something back. This is optional")
-                }, errorHandler: {  (error ) -> Void in
-                    
-                    var errorString = " "
-                    errorString = errorString.stringByAppendingFormat("%@ %d", error.domain, error.code)
-                    self.statusLabel.setText(errorString)
-                    print("We got an error from our paired device : " + error.domain + String(error.code))
-            })
+            
+            if (self.dataAsContextState) {
+                do {
+                    try availableSession.updateApplicationContext(message);
+                } catch {
+                    self.statusLabel.setText("error sending app state");
+                }
+            } else {
+                
+                availableSession.sendMessage(message, replyHandler: { (content:[String : AnyObject]) -> Void in
+                    print("Our counterpart sent something back. This is optional")
+                    }, errorHandler: {  (error ) -> Void in
+                        
+                        var errorString = " "
+                        errorString = errorString.stringByAppendingFormat("%@ %d", error.domain, error.code)
+                        self.statusLabel.setText(errorString)
+                        print("We got an error from our paired device : " + error.domain + String(error.code))
+                })
+            }
         }
     }
     
