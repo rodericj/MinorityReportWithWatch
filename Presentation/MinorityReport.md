@@ -1,89 +1,261 @@
+footer: roderic@thumbworks.io
+
 # [fit] Minority Report with a Watch 
 
-
 ---
 
-# Wait, which part?
-
-- Precognition 
-- Cool autonomous cars that slide
-- The Multi-touch, multidiminsional UI
+### *can we even do it?*
 
 ---
+# Agenda
 
-# Wait, which part?
-![left fit](/Users/everest/dev/MinorityReportWithWatch/Presentation/precog.gif) 
+- The Movie
+- The Watch
+- The Motion 
+- The Networking 
+- The Next Steps
+
+^ This is what we are going to talk about
+
+
+
+
+
+---
+# The Movie
+![left 100%](/Users/everest/dev/MinorityReportWithWatch/Presentation/precog.gif) 
 
 - Precognition
-- Cool autonomous cars that slide
-- The Multi-touch, multidiminsional UI
 
----
+^ The movie had lots of great things
 
 
-# Wait, which part?
-![left fit](/Users/everest/dev/MinorityReportWithWatch/Presentation/precog.gif) 
-
-- ~~Precognition~~
-- Cool autonomous cars that slide
-- The Multi-touch, multidiminsional UI
-
----
-
-
-![left fit](/Users/everest/dev/MinorityReportWithWatch/Presentation/tomInACar.jpg) 
-
-# Wait, which part?
-
-- ~~Precognition~~ 
-- Cool autonomous cars that slide
-- The Multi-touch, multidiminsional UI
-
----
-
-![left fit](/Users/everest/dev/MinorityReportWithWatch/Presentation/tomInACar.jpg) 
-
-# Wait, which part?
-
-- ~~Precognition~~ 
-- ~~Cool autonomous cars that slide~~
-- The Multi-touch, multidiminsional UI
-
----
-![left fit](/Users/everest/dev/MinorityReportWithWatch/Presentation/multitouch.gif) 
-
-# Wait, which part?
-
-- ~~Precognition~~ 
-- ~~Cool autonomous cars that slide~~
-- The Multi-touch, multidiminsional UI
 
 
 ---
+# The Movie
+![left 40%](/Users/everest/dev/MinorityReportWithWatch/Presentation/tomInACar.jpg) 
 
-![left fit](/Users/everest/dev/MinorityReportWithWatch/Presentation/multitouch.gif) 
+- Precognition
+- Cool autonomous cars
 
-# Wait, which part?
 
-- ~~Precognition~~ 
-- ~~Cool autonomous cars that slide~~
-- The Multi-touch, multidiminsional UI 😉
+
+
+---
+# The Movie
+![left 30%](/Users/everest/dev/MinorityReportWithWatch/Presentation/soundgun.jpg) 
+
+- Precognition
+- Cool autonomous cars
+- Non-lethal weapons
 
 
 ---
+# The Movie
+![left 140%](/Users/everest/dev/MinorityReportWithWatch/Presentation/multitouch.gif) 
 
-# Quotes
+- Precognition
+- Cool autonomous cars
+- Non-lethal weapons
+- The multitouch, multidiminsional UI
 
-Quotes look great in our themes. Here’s how they work.
+
 
 ---
+# Agenda
 
-> The best way to predict the future is to invent it
--- Alan Kay
+- The Movie ✔︎
+- The Watch
+- The Motion 
+- The Networking 
+- The Next Steps
+
+^ We are not here to talk about movies
 
 ---
+# The Watch :watch:
 
-# And with some other body copy
+- WatchOS was a good start
 
-> The best way to predict the future is to invent it
--- Alan Kay
+^ Good start but left us wanting more. Basically just sending touch events to the phone
+
+
+
+---
+# The Watch :watch:
+
+- WatchOS was a good start
+- WatchOS 2 opens up a few new things
+
+^ along comes watchOS 2. Now we can actually gather data, and then send it over
+
+---
+# The Watch :watch:
+
+ - Access to the Gyro
+ - WatchConnectivity
+
+^ again, gather data and send it over
+
+---
+# Agenda
+
+- The Movie ✔︎
+- The Watch ✔︎
+- The Motion 
+- The Networking 
+- The Next Steps
+
+---
+# The Motion 
+
+``` swift
+import CoreMotion
+let manager = CMMotionManager()
+manager.accelerometerUpdateInterval = 0.5
+...
+if (manager.accelerometerAvailable) {
+
+    manager.startAccelerometerUpdatesToQueue(motionQueue) { 
+            (data:CMAccelerometerData?, error:NSError?) -> Void in
+            if let accel = data {
+                // process the data on the watch
+            }
+}
+
+```
+
+^ `This is all new stuff in WatchOS2, we couldn't actually do this before. Also note that the gyro and magnetometer are not available
+
+
+---
+# Agenda
+
+- The Movie ✔︎
+- The Watch ✔︎
+- The Motion ✔︎
+- The Networking 
+- The Next Steps
+
+
+
+---
+# The Networking 
+
+``` swift
+import WatchConnectivity
+
+if(WCSession.isSupported()) {
+    WCSession.defaultSession().delegate = self
+    WCSession.defaultSession().activateSession()
+}
+
+```
+
+^ `It is this simple because the phone and the watch are paired somewhere below the application layer. No handshake, no auth, just open and go
+
+---
+# The Networking 
+
+``` swift
+public class WCSession : NSObject {
+...
+    public var paired: Bool { get }
+    public var reachable: Bool { get }
+    public func sendMessage(message: [String : AnyObject], ...
+    public func updateApplicationContext(applicationContext: [String : AnyObject]) throws
+}
+
+```
+
+
+
+---
+# The Networking 
+
+``` swift
+
+public protocol WCSessionDelegate : NSObjectProtocol {
+    // queueing mechanism
+    optional public func session(session: WCSession, 
+                                 didReceiveMessage message: [String : AnyObject])
+
+    // just an update, drop everything else
+    optional public func session(session: WCSession, 
+                                didReceiveApplicationContext applicationContext: [String : AnyObject])
+}
+``` 
+
+
+---
+# The Networking 
+
+``` swift
+
+let message = ["x" : a.x, 
+               "y" : a.y,
+               "z" : a.z, 
+               "time" : NSDate().timeIntervalSince1970, 
+               "rate": self.manager.accelerometerUpdateInterval]
+
+session.sendMessage(message, 
+                    replyHandler: { (content:[String : AnyObject]) -> Void in
+    // Our counterpart can send an optional response
+}, 
+                    errorHandler: {  (error ) -> Void in
+    // do something with the error
+})
+
+```
+
+^ build message with the motion data. Option to do something with a response. Errors on timeout, not connected, etc
+
+
+
+
+---
+# The Networking 
+
+``` swift
+
+func session(session: WCSession, 
+            didReceiveMessage message: [String : AnyObject], 
+            replyHandler: ([String : AnyObject]) -> Void) {
+
+    if let xValue = message["x"] {
+        self.xLabel.text = "x: ".stringByAppendingString(String(xValue))
+    }
+    ...
+}
+
+```
+
+^ Notice the replyHandler. This allows us to send that optional response
+
+
+
+---
+# The Networking 
+
+*Demo*
+
+
+
+---
+# Agenda
+
+- The Movie ✔︎
+- The Watch ✔︎
+- The Motion ✔︎
+- The Networking  ✔︎
+- The Next Steps
+
+
+---
+# Next steps
+
+ - ⌚️ Access to the Gyro 
+ - ⌚️ Handling the watch turning itself off when twisting
+ - ⌚️ Putting together an actual UI with element selection/switching
+ - 🚀 DeckRocket  (https://github.com/jpsim/DeckRocket)
