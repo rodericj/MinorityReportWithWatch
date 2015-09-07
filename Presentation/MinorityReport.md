@@ -1,4 +1,5 @@
 footer: @roderic 
+slidenumbers: true
 
 # [fit] Minority Report with a Watch 
 
@@ -296,13 +297,11 @@ func session(session: WCSession,
 ---
 
 # Special Credits
- - 🚀 DeckRocket by JPSimard
- -- (https://github.com/jpsim/DeckRocket)
 
- - Scenery 
- -- http://www.getscenery.com
 
  - Philippe Dewost's video Analysis of Minority Report UI 
  --https://vimeo.com/49216050
 
+ - Scenery 
+ -- http://www.getscenery.com
 
