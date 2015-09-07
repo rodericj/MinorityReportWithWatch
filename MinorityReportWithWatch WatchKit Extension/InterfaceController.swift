@@ -103,18 +103,79 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         self.dataAsContextState = value;
     }
     
+    func updateRangeTestLabels(a : CMAcceleration) {
+        if (a.x > self.maxX) {
+            self.maxX = a.x
+            self.maxXLabel.setText("max X: ".stringByAppendingString(String(a.x)))
+        }
+        if (a.x < self.minX) {
+            self.minX = a.x
+            self.minXLabel.setText("min X: ".stringByAppendingString(String(a.x)))
+        }
+        
+        if (a.y > self.maxY) {
+            self.maxY = a.y
+            self.maxYLabel.setText("max Y: ".stringByAppendingString(String(a.y)))
+        }
+        if (a.y < self.minY) {
+            self.minY = a.y
+            self.minYLabel.setText("min Y: ".stringByAppendingString(String(a.y)))
+        }
+        
+        if (a.z > self.maxZ) {
+            self.maxZ = a.z
+            self.maxZLabel.setText("max Z: ".stringByAppendingString(String(a.z)))
+        }
+        if (a.z < self.minZ) {
+            self.minZ = a.z
+            self.minZLabel.setText("min Z: ".stringByAppendingString(String(a.z)))
+        }
+
+    }
+    
+    func updateXYZLabels(a : CMAcceleration) {
+        self.xLabel.setText("x: ".stringByAppendingString(String(a.x)))
+        self.yLabel.setText("y: ".stringByAppendingString(String(a.y)))
+        self.zLabel.setText("z: ".stringByAppendingString(String(a.z)))
+    }
+    
+    @IBAction func accelerometerSwitchChanged(value: Bool) {
+        if (manager.accelerometerAvailable) {
+            if (!value) {
+                manager.stopAccelerometerUpdates()
+            } else {
+                manager.startAccelerometerUpdatesToQueue(motionQueue) { (data:CMAccelerometerData?, error:NSError?) -> Void in
+                    if let accel = data {
+                        let a = accel.acceleration
+                        self.updateXYZLabels(a)
+                        
+                        if (self.runningRangeTest) {
+                            self.updateRangeTestLabels(a)
+                        }
+                        
+                        // create a message dictionary to send
+                        if (self.sendDataSwitchState) {
+                            let message = ["x" : a.x, "y" : a.y, "z" : a.z, "time" : NSDate().timeIntervalSince1970, "rate": self.manager.accelerometerUpdateInterval]
+                            self.sendMessage(message)
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
     @IBAction func sendDataSwitchChanged(value: Bool) {
         self.sendDataSwitchState = value
     }
     
     @IBAction func sliderChange(value: Float) {
         manager.accelerometerUpdateInterval = Double(value)
-        self.rateLabel.setText(String(value))
+        self.rateLabel.setText("rate: ".stringByAppendingString(String(value)))
     }
     
     @IBAction func sendDummyData() {
         self.updateLabel()
-        let message = ["x" : 1, "y" : 2, "z" : 3, "time" : NSDate().timeIntervalSince1970]
+        let message = ["x" : 1, "y" : 2, "z" : 3, "time" : NSDate().timeIntervalSince1970, "rate" : 0.1]
         if let availableSession = self.session {
             availableSession.sendMessage(message, replyHandler: { (content:[String : AnyObject]) -> Void in
                 print("Our counterpart sent something back. This is optional")
@@ -124,58 +185,6 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
                     errorString = errorString.stringByAppendingFormat("%@ %d", error.domain, error.code)
                     self.statusLabel.setText(errorString)
             })
-        }
-    }
-    
-    @IBAction func startStopButtonTapped() {
-        if (manager.accelerometerAvailable) {
-            if (manager.accelerometerActive) {
-                manager.stopAccelerometerUpdates()
-            } else {
-                manager.startAccelerometerUpdatesToQueue(motionQueue) { (data:CMAccelerometerData?, error:NSError?) -> Void in
-                    if let accel = data {
-                        let a = accel.acceleration
-                        self.xLabel.setText("x: ".stringByAppendingString(String(a.x)))
-                        self.yLabel.setText("y: ".stringByAppendingString(String(a.y)))
-                        self.zLabel.setText("z: ".stringByAppendingString(String(a.z)))
-                        
-                        if (self.runningRangeTest) {
-                            if (a.x > self.maxX) {
-                                self.maxX = a.x
-                                self.maxXLabel.setText("max X: ".stringByAppendingString(String(a.x)))
-                            }
-                            if (a.x < self.minX) {
-                                self.minX = a.x
-                                self.minXLabel.setText("min X: ".stringByAppendingString(String(a.x)))
-                            }
-                            
-                            if (a.y > self.maxY) {
-                                self.maxY = a.y
-                                self.maxYLabel.setText("max Y: ".stringByAppendingString(String(a.y)))
-                            }
-                            if (a.y < self.minY) {
-                                self.minY = a.y
-                                self.minYLabel.setText("min Y: ".stringByAppendingString(String(a.y)))
-                            }
-                            
-                            if (a.z > self.maxZ) {
-                                self.maxZ = a.z
-                                self.maxZLabel.setText("max Z: ".stringByAppendingString(String(a.z)))
-                            }
-                            if (a.z < self.minZ) {
-                                self.minZ = a.z
-                                self.minZLabel.setText("min Z: ".stringByAppendingString(String(a.z)))
-                            }
-                        }
-                        // create a message dictionary to send
-                        
-                        if (self.sendDataSwitchState) {
-                            let message = ["x" : a.x, "y" : a.y, "z" : a.z, "time" : NSDate().timeIntervalSince1970, "rate": self.manager.accelerometerUpdateInterval]
-                            self.sendMessage(message)
-                        }
-                    }
-                }
-            }
         }
     }
     
@@ -201,13 +210,21 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
             self.minY = 100
             self.minYLabel.setText("min Y: ")
 
-            
             self.maxZ = -100
             self.maxZLabel.setText("max Z: ")
 
             self.minZ = 100
             self.minZLabel.setText("min Z: ")
         }
+    }
+    
+    // We want to send a message to the phone that w'er
+    @IBAction func debugStateChanged(value: Bool) {
+        self.sendMessage(["debugState" : value ? 1.0 : 0.0])
+    }
+    
+    @IBAction func rotateStateChanged(value: Bool) {
+        self.sendMessage(["rotateState" : value ? 1.0 : 0.0])
     }
     
     func sendMessage(message : Dictionary<String, Double>) {

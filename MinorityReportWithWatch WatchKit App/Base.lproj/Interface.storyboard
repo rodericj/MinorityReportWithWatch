@@ -10,17 +10,17 @@
             <objects>
                 <controller id="AgC-eL-Hgc" customClass="InterfaceController" customModule="MinorityReportWithWatch_WatchKit_App" customModuleProvider="target">
                     <items>
-                        <button width="1" alignment="left" title="send test" id="sMe-S3-uG4">
+                        <button width="1" alignment="left" title="Testing Testing, is this thing on?" id="sMe-S3-uG4">
                             <connections>
                                 <action selector="sendDummyData" destination="AgC-eL-Hgc" id="mih-YN-sWc"/>
                             </connections>
                         </button>
                         <separator alignment="left" id="vHq-Yo-HoJ"/>
-                        <button width="1" alignment="left" title="start/stop" id="YjJ-ww-8Ru">
+                        <switch width="1" alignment="left" title="Accel" id="Wk0-MG-ya4">
                             <connections>
-                                <action selector="startStopButtonTapped" destination="AgC-eL-Hgc" id="rT6-vg-GFJ"/>
+                                <action selector="accelerometerSwitchChanged:" destination="AgC-eL-Hgc" id="uFi-cv-awx"/>
                             </connections>
-                        </button>
+                        </switch>
                         <label alignment="left" text="x:" id="ttZ-TU-ZVO"/>
                         <label alignment="left" text="y:" id="mGb-jT-mon"/>
                         <label alignment="left" text="z:" id="eAp-g9-sCq"/>
@@ -40,6 +40,16 @@
                             </connections>
                         </slider>
                         <label alignment="left" text="rate:" id="Ch7-dZ-aTN"/>
+                        <switch width="1" alignment="left" value="YES" title="Show Debug" id="5au-KT-GLc">
+                            <connections>
+                                <action selector="debugStateChanged:" destination="AgC-eL-Hgc" id="g0M-6W-u5s"/>
+                            </connections>
+                        </switch>
+                        <switch width="1" alignment="left" value="YES" title="Rotate/Zoom" id="rdm-DU-hAm">
+                            <connections>
+                                <action selector="rotateStateChanged:" destination="AgC-eL-Hgc" id="Jml-jD-QR2"/>
+                            </connections>
+                        </switch>
                         <separator alignment="left" id="f3X-w1-Ieq"/>
                         <label alignment="left" text="error label" id="ac7-IK-vTf">
                             <color key="textColor" red="1" green="0.1410829431" blue="0.30172343169999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -79,7 +89,7 @@
                     </connections>
                 </controller>
             </objects>
-            <point key="canvasLocation" x="220" y="375"/>
+            <point key="canvasLocation" x="224" y="375.5"/>
         </scene>
         <!--Static Notification Interface Controller-->
         <scene sceneID="AEw-b0-oYE">
@@ -95,7 +105,7 @@
                     </connections>
                 </notificationController>
             </objects>
-            <point key="canvasLocation" x="220" y="643"/>
+            <point key="canvasLocation" x="284" y="851"/>
         </scene>
         <!--Notification Controller-->
         <scene sceneID="ZPc-GJ-vnh">

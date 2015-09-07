@@ -7,14 +7,14 @@
 	<key>IDESourceControlProjectIdentifier</key>
 	<string>285B3CEB-76E5-4B6B-9C96-906265A8C1E1</string>
 	<key>IDESourceControlProjectName</key>
-	<string>project</string>
+	<string>MinorityReportWithWatch</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>D07809D3E69310BAC13D839BC3C750470F0AA6BF</key>
 		<string>github.com:rodericj/MinorityReportWithWatch.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>MinorityReportWithWatch.xcodeproj/project.xcworkspace</string>
+	<string>MinorityReportWithWatch.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>D07809D3E69310BAC13D839BC3C750470F0AA6BF</key>
