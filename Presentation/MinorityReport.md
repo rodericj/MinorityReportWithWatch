@@ -1,15 +1,18 @@
-footer: roderic@thumbworks.io
+footer: @roderic 
 
 # [fit] Minority Report with a Watch 
 
 ---
 
-### *can we even do it?*
+# [fit] Minority Report with a Watch 
+
+### or how close can we get?
 
 ---
 # Agenda
 
 - The Movie
+- The Demo
 - The Watch
 - The Motion 
 - The Networking 
@@ -53,19 +56,20 @@ footer: roderic@thumbworks.io
 
 ---
 # The Movie
-![left 140%](/Users/everest/dev/MinorityReportWithWatch/Presentation/multitouch.gif) 
 
 - Precognition
 - Cool autonomous cars
 - Non-lethal weapons
 - The multitouch, multidiminsional UI
 
-
+![left fit autoplay mute loop](ui.mp4)
 
 ---
+
 # Agenda
 
 - The Movie ✔︎
+- The Demo
 - The Watch
 - The Motion 
 - The Networking 
@@ -93,7 +97,7 @@ footer: roderic@thumbworks.io
 ---
 # The Watch :watch:
 
- - Access to the Gyro
+ - Access to the Accelerometer
  - WatchConnectivity
 
 ^ again, gather data and send it over
@@ -102,10 +106,28 @@ footer: roderic@thumbworks.io
 # Agenda
 
 - The Movie ✔︎
+- The Demo ✔︎
 - The Watch ✔︎
 - The Motion 
 - The Networking 
 - The Next Steps
+
+---
+# The Motion 
+
+
+> *The Apple Watch accelerometer measures total body movement, counts your steps, and calculates your calories burned throughout the day*
+
+-- Apple
+
+---
+# The Motion 
+
+![inline 40%](/Users/everest/dev/MinorityReportWithWatch/Presentation/framedx1y0z0.png) ![inline 40%](/Users/everest/dev/MinorityReportWithWatch/Presentation/framedx0y-1z0.png) ![inline 40%](/Users/everest/dev/MinorityReportWithWatch/Presentation/framedx-1y0z0.png) 
+
+^normal upright x0y-1z0
+right side down x1y0z0
+left side down x-1y0z0
 
 ---
 # The Motion 
@@ -126,19 +148,25 @@ if (manager.accelerometerAvailable) {
 
 ```
 
-^ `This is all new stuff in WatchOS2, we couldn't actually do this before. Also note that the gyro and magnetometer are not available
+^ This is all new stuff in WatchOS2, we could not actually do this before. Also note that the gyro and magnetometer are not available
 
 
 ---
 # Agenda
 
 - The Movie ✔︎
+- The Demo ✔︎
 - The Watch ✔︎
 - The Motion ✔︎
 - The Networking 
 - The Next Steps
 
 
+
+---
+# The Networking 
+
+WatchConnectivity
 
 ---
 # The Networking 
@@ -155,6 +183,8 @@ if(WCSession.isSupported()) {
 
 ^ `It is this simple because the phone and the watch are paired somewhere below the application layer. No handshake, no auth, just open and go
 
+
+
 ---
 # The Networking 
 
@@ -163,6 +193,7 @@ public class WCSession : NSObject {
 ...
     public var paired: Bool { get }
     public var reachable: Bool { get }
+
     public func sendMessage(message: [String : AnyObject], ...
     public func updateApplicationContext(applicationContext: [String : AnyObject]) throws
 }
@@ -225,6 +256,7 @@ func session(session: WCSession,
 
     if let xValue = message["x"] {
         self.xLabel.text = "x: ".stringByAppendingString(String(xValue))
+        // you know, or something more interesting than setting a label
     }
     ...
 }
@@ -246,6 +278,7 @@ func session(session: WCSession,
 # Agenda
 
 - The Movie ✔︎
+- The Demo ✔︎
 - The Watch ✔︎
 - The Motion ✔︎
 - The Networking  ✔︎
@@ -253,9 +286,23 @@ func session(session: WCSession,
 
 
 ---
-# Next steps
+# The Next steps
 
- - ⌚️ Access to the Gyro 
+ - ⌚️ Access to the Accelerometer would be lovely
  - ⌚️ Handling the watch turning itself off when twisting
  - ⌚️ Putting together an actual UI with element selection/switching
  - 🚀 DeckRocket  (https://github.com/jpsim/DeckRocket)
+
+---
+
+# Special Credits
+ - 🚀 DeckRocket by JPSimard
+ -- (https://github.com/jpsim/DeckRocket)
+
+ - Scenery 
+ -- http://www.getscenery.com
+
+ - Philippe Dewost's video Analysis of Minority Report UI 
+ --https://vimeo.com/49216050
+
+
