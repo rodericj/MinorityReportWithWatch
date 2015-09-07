@@ -17,10 +17,17 @@
                         </button>
                         <separator alignment="left" id="vHq-Yo-HoJ"/>
                         <switch width="1" alignment="left" title="Accel" id="Wk0-MG-ya4">
+                            <color key="tintColor" red="1" green="1" blue="0.2172227444" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="accelerometerSwitchChanged:" destination="AgC-eL-Hgc" id="uFi-cv-awx"/>
                             </connections>
                         </switch>
+                        <label alignment="left" text="CM/Sec" id="Ch7-dZ-aTN"/>
+                        <slider width="1" height="24.5" alignment="left" value="0.5" steps="10" id="gho-29-CWx">
+                            <connections>
+                                <action selector="sliderChange:" destination="AgC-eL-Hgc" id="ksU-wP-rnb"/>
+                            </connections>
+                        </slider>
                         <label alignment="left" text="x:" id="ttZ-TU-ZVO"/>
                         <label alignment="left" text="y:" id="mGb-jT-mon"/>
                         <label alignment="left" text="z:" id="eAp-g9-sCq"/>
@@ -30,22 +37,18 @@
                             </connections>
                         </switch>
                         <switch width="1" alignment="left" title="data as context" id="gyw-zX-zBd">
+                            <color key="tintColor" red="1" green="1" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
                                 <action selector="dataAsContextSwitchChanged:" destination="AgC-eL-Hgc" id="09q-7s-5Gh"/>
                             </connections>
                         </switch>
-                        <slider width="1" alignment="left" value="0.5" steps="10" id="gho-29-CWx">
-                            <connections>
-                                <action selector="sliderChange:" destination="AgC-eL-Hgc" id="ksU-wP-rnb"/>
-                            </connections>
-                        </slider>
-                        <label alignment="left" text="rate:" id="Ch7-dZ-aTN"/>
                         <switch width="1" alignment="left" value="YES" title="Show Debug" id="5au-KT-GLc">
                             <connections>
                                 <action selector="debugStateChanged:" destination="AgC-eL-Hgc" id="g0M-6W-u5s"/>
                             </connections>
                         </switch>
-                        <switch width="1" alignment="left" value="YES" title="Rotate/Zoom" id="rdm-DU-hAm">
+                        <switch width="1" alignment="left" value="YES" title="Rotate/Zoom" numberOfLines="2" id="rdm-DU-hAm">
+                            <color key="tintColor" red="1" green="0.1410829431" blue="0.30172343169999999" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="rotateStateChanged:" destination="AgC-eL-Hgc" id="Jml-jD-QR2"/>
                             </connections>
@@ -89,7 +92,7 @@
                     </connections>
                 </controller>
             </objects>
-            <point key="canvasLocation" x="224" y="375.5"/>
+            <point key="canvasLocation" x="224" y="368.75"/>
         </scene>
         <!--Static Notification Interface Controller-->
         <scene sceneID="AEw-b0-oYE">

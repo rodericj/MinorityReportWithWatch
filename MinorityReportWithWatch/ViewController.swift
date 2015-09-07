@@ -25,9 +25,6 @@ class ViewController: UIViewController, WCSessionDelegate {
     
     @IBOutlet var debugElements: [UIView]!
     
-    @IBOutlet weak var numeratorSelector: UISegmentedControl!
-    @IBOutlet weak var denominatorSelector: UISegmentedControl!
-    
     var rotationSet : Bool
     
     let session : WCSession
@@ -106,11 +103,8 @@ class ViewController: UIViewController, WCSessionDelegate {
                 // if we're in the scaling/zooming mode, lets scale
                 if (!self.rotationSet) {
                     if let rate = message["rate"] as! NSTimeInterval? {
-                        let shorterRate = rate - 0.1
-                        
-                        UIView.animateWithDuration(shorterRate, delay: 0, options: .BeginFromCurrentState, animations: { () -> Void in
+                        UIView.animateWithDuration(rate, delay: 0, options: .BeginFromCurrentState, animations: { () -> Void in
                             let scale = max(0.5, CGFloat(zValue + 1) * 3 + 0.5)
-                            print("scale is " + String(scale))
                             self.howardImageView.transform = CGAffineTransformMakeScale(scale, scale)
                             }, completion: nil)
                     }
@@ -123,17 +117,11 @@ class ViewController: UIViewController, WCSessionDelegate {
             if (self.rotationSet) {
                 
                 // Using X Y or Z parameters for the accelerometer based augmentation
-                let numeratorString = self.numeratorSelector.titleForSegmentAtIndex(self.numeratorSelector.selectedSegmentIndex)
-                if let numeratorValue = message[numeratorString!] as! Float? {
-                    let denominatorString = self.denominatorSelector.titleForSegmentAtIndex(self.denominatorSelector.selectedSegmentIndex)
-                    
-                    if let denominatorValue = message[denominatorString!] as! Float? {
+                if let numeratorValue = message["y"] as! Float? {
+                    if let denominatorValue = message["z"] as! Float? {
                         if let rate = message["rate"] as! NSTimeInterval? {
-                            let shorterRate = rate - 0.1
-                            UIView.animateWithDuration(shorterRate, delay: 0, options: .BeginFromCurrentState, animations: { () -> Void in
+                            UIView.animateWithDuration(rate, delay: 0, options: .BeginFromCurrentState, animations: { () -> Void in
                                 let rotation = atan2(Double(numeratorValue), Double(denominatorValue)) - M_PI
-                                
-                                print("rotation is " + String(rotation))
                                 self.howardImageView.transform = CGAffineTransformMakeRotation(CGFloat(rotation))
                                 }, completion: nil)
                         }
@@ -154,9 +142,9 @@ class ViewController: UIViewController, WCSessionDelegate {
     
     func isAppInstalledLabelUpdate() {
         if(self.session.watchAppInstalled) {
-            self.isAppInstalledLabel.text = "app is\non ⌚️"
+            self.isAppInstalledLabel.text = "installed ✅"
         } else {
-            self.isAppInstalledLabel.text = "app is\nnot on ⌚️"
+            self.isAppInstalledLabel.text = "installed 🚨"
         }
     }
     
@@ -165,18 +153,18 @@ class ViewController: UIViewController, WCSessionDelegate {
             print("updating a label on not the main thread")
         }
         if(self.session.reachable) {
-            self.isConnectedLabel.text = "⌚️ reachable"
+            self.isConnectedLabel.text = "reachable ✅"
         } else {
-            self.isConnectedLabel.text = "⌚️ not \nreachable"
+            self.isConnectedLabel.text = "reachable 🚨"
         }
 
     }
     
     func isPairedLabelUpdate() {
         if(self.session.paired) {
-            self.isPairedLabel.text = "⌚️ and 📱 \nare 🍐d"
+            self.isPairedLabel.text = "paired ✅"
         } else {
-            self.isPairedLabel.text = "🚨 ⌚️ and 📱\nare not 🍐d"
+            self.isPairedLabel.text = "paired 🚨"
         }
     }
     
