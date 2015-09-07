@@ -11,7 +11,7 @@ import WatchConnectivity
 
 class ViewController: UIViewController, WCSessionDelegate {
 
-    @IBOutlet weak var emojiLabel: UILabel!
+    @IBOutlet weak var howardImageView: UIImageView!
     
     @IBOutlet weak var xLabel: UILabel!
     @IBOutlet weak var yLabel: UILabel!
@@ -23,12 +23,18 @@ class ViewController: UIViewController, WCSessionDelegate {
     
     @IBOutlet weak var delayLabel: UILabel!
     
+    @IBOutlet var debugElements: [UIView]!
+    
     @IBOutlet weak var numeratorSelector: UISegmentedControl!
     @IBOutlet weak var denominatorSelector: UISegmentedControl!
+    
+    var rotationSet : Bool
+    
     let session : WCSession
     
     required init?(coder aDecoder: NSCoder) {
         session = WCSession.defaultSession()
+        rotationSet = true
         super.init(coder: aDecoder)
     }
     
@@ -44,6 +50,13 @@ class ViewController: UIViewController, WCSessionDelegate {
         }
     }
 
+    func hideLabels(shouldHide : Bool) {
+    
+        for view in self.debugElements {
+            view.hidden = shouldHide
+        }
+    }
+    
     func sessionReachabilityDidChange(session: WCSession) {
         // Aha, this may not be coming back on the main thread. Fix that
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
@@ -67,31 +80,68 @@ class ViewController: UIViewController, WCSessionDelegate {
     
     func processMessage(message : [String : AnyObject]) {
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            if let xValue = message["x"] as! Float? {
+
+            // Determine if we are rotating or zooming
+            if let stateValue = message["rotateState"] as! Float? {
+                self.rotationSet = stateValue == 1.0
+            }
+            
+            // Hide and show the appropriate things based on the state sent over
+            if let stateValue = message["debugState"] as! Float? {
+                self.hideLabels(stateValue != 1.0)
+                print("now rotate is set to " + (stateValue != 1.0 ? "on" : "off"))
+            }
+            
+            
+            // update the appropriate x/y/z labels
+            if let xValue = message["x"] {  // as! Float? {
                 self.xLabel.text = "x: ".stringByAppendingString(String(xValue))
             }
-            if let yValue = message["y"] as! Float? {
+            if let yValue = message["y"] { // as! Float? {
                 self.yLabel.text = "y: ".stringByAppendingString(String(yValue))
             }
             if let zValue = message["z"] as! Float? {
                 self.zLabel.text = "z: ".stringByAppendingString(String(zValue))
-            }
-            
-            let numeratorString = self.numeratorSelector.titleForSegmentAtIndex(self.numeratorSelector.selectedSegmentIndex)
-            if let numeratorValue = message[numeratorString!] as! Float? {
-                let denominatorString = self.denominatorSelector.titleForSegmentAtIndex(self.denominatorSelector.selectedSegmentIndex)
                 
-                if let denominatorValue = message[denominatorString!] as! Float? {
+                // if we're in the scaling/zooming mode, lets scale
+                if (!self.rotationSet) {
                     if let rate = message["rate"] as! NSTimeInterval? {
                         let shorterRate = rate - 0.1
+                        
                         UIView.animateWithDuration(shorterRate, delay: 0, options: .BeginFromCurrentState, animations: { () -> Void in
-                            let rotation = atan2(Double(numeratorValue), Double(denominatorValue)) - M_PI
-                            print("rotation is " + String(rotation))
-                            self.emojiLabel.transform = CGAffineTransformMakeRotation(-CGFloat(rotation))
+                            let scale = max(0.5, CGFloat(zValue + 1) * 3 + 0.5)
+                            print("scale is " + String(scale))
+                            self.howardImageView.transform = CGAffineTransformMakeScale(scale, scale)
                             }, completion: nil)
                     }
                 }
+                
             }
+
+            
+            // rotation (zooming is above)
+            if (self.rotationSet) {
+                
+                // Using X Y or Z parameters for the accelerometer based augmentation
+                let numeratorString = self.numeratorSelector.titleForSegmentAtIndex(self.numeratorSelector.selectedSegmentIndex)
+                if let numeratorValue = message[numeratorString!] as! Float? {
+                    let denominatorString = self.denominatorSelector.titleForSegmentAtIndex(self.denominatorSelector.selectedSegmentIndex)
+                    
+                    if let denominatorValue = message[denominatorString!] as! Float? {
+                        if let rate = message["rate"] as! NSTimeInterval? {
+                            let shorterRate = rate - 0.1
+                            UIView.animateWithDuration(shorterRate, delay: 0, options: .BeginFromCurrentState, animations: { () -> Void in
+                                let rotation = atan2(Double(numeratorValue), Double(denominatorValue)) - M_PI
+                                
+                                print("rotation is " + String(rotation))
+                                self.howardImageView.transform = CGAffineTransformMakeRotation(CGFloat(rotation))
+                                }, completion: nil)
+                        }
+                    }
+                }
+            }
+            
+            // Show the Time delta
             if let timeSent = message["time"] as! NSTimeInterval? {
                 let delta = NSDate().timeIntervalSince1970 - timeSent
                 self.delayLabel.text = String(delta)
