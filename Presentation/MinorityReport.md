@@ -16,7 +16,7 @@ slidenumbers: true
 - The Demo
 - The Watch
 - The Motion 
-- The Networking 
+- The Network 
 - The Next Steps
 
 ^ This is what we are going to talk about
@@ -54,6 +54,7 @@ slidenumbers: true
 - Cool autonomous cars
 - Non-lethal weapons
 
+^ sick sticks, sound guns
 
 ---
 # The Movie
@@ -73,7 +74,7 @@ slidenumbers: true
 - The Demo
 - The Watch
 - The Motion 
-- The Networking 
+- The Network 
 - The Next Steps
 
 ^ We are not here to talk about movies
@@ -85,6 +86,7 @@ slidenumbers: true
 
 ^ Good start but left us wanting more. Basically just sending touch events to the phone
 
+^ along comes watchOS 2. Now we can actually gather data, and then send it over
 
 
 ---
@@ -94,6 +96,21 @@ slidenumbers: true
 - WatchOS 2 opens up a few new things
 
 ^ along comes watchOS 2. Now we can actually gather data, and then send it over
+
+---
+# The Watch :watch:
+
+- WatchOS was a good start
+- WatchOS 2 opens up a few new things
+- WatchOS 2 developing for the watch should be very familiar
+
+^ along comes watchOS 2. Now we can actually gather data, and then send it over
+
+---
+
+![fill](/Users/everest/dev/MinorityReportWithWatch/Presentation/storyboard.jpg) 
+
+^ for watch development you must implement your UI in storyboards. interesting
 
 ---
 # The Watch :watch:
@@ -110,19 +127,11 @@ slidenumbers: true
 - The Demo ✔︎
 - The Watch ✔︎
 - The Motion 
-- The Networking 
+- The Network 
 - The Next Steps
 
 ---
-# The Motion 
-
-
-> *The Apple Watch accelerometer measures total body movement, counts your steps, and calculates your calories burned throughout the day*
-
--- Apple
-
----
-# The Motion 
+# The Motion (CoreMotion)
 
 ![inline 40%](/Users/everest/dev/MinorityReportWithWatch/Presentation/framedx1y0z0.png) ![inline 40%](/Users/everest/dev/MinorityReportWithWatch/Presentation/framedx0y-1z0.png) ![inline 40%](/Users/everest/dev/MinorityReportWithWatch/Presentation/framedx-1y0z0.png) 
 
@@ -131,7 +140,7 @@ right side down x1y0z0
 left side down x-1y0z0
 
 ---
-# The Motion 
+# The Motion (CoreMotion)
 
 ``` swift
 import CoreMotion
@@ -149,7 +158,7 @@ if (manager.accelerometerAvailable) {
 
 ```
 
-^ This is all new stuff in WatchOS2, we could not actually do this before. Also note that the gyro and magnetometer are not available
+^ This is all new stuff in WatchOS 2, we could not actually do this before. Also note that the gyro and magnetometer are not available
 
 
 ---
@@ -159,18 +168,13 @@ if (manager.accelerometerAvailable) {
 - The Demo ✔︎
 - The Watch ✔︎
 - The Motion ✔︎
-- The Networking 
+- The Network 
 - The Next Steps
 
 
 
 ---
-# The Networking 
-
-WatchConnectivity
-
----
-# The Networking 
+# The Network (WatchConnectivity)
 
 ``` swift
 import WatchConnectivity
@@ -182,12 +186,12 @@ if(WCSession.isSupported()) {
 
 ```
 
-^ `It is this simple because the phone and the watch are paired somewhere below the application layer. No handshake, no auth, just open and go
+^ It is this simple because the phone and the watch are paired somewhere below the application layer. No handshake, no auth, just open and go. 
 
 
 
 ---
-# The Networking 
+# The Network (WatchConnectivity)
 
 ``` swift
 public class WCSession : NSObject {
@@ -204,7 +208,7 @@ public class WCSession : NSObject {
 
 
 ---
-# The Networking 
+# The Network (WatchConnectivity)
 
 ``` swift
 
@@ -221,7 +225,7 @@ public protocol WCSessionDelegate : NSObjectProtocol {
 
 
 ---
-# The Networking 
+# The Network (WatchConnectivity)
 
 ``` swift
 
@@ -247,7 +251,7 @@ session.sendMessage(message,
 
 
 ---
-# The Networking 
+# The Network (WatchConnectivity)
 
 ``` swift
 
@@ -267,14 +271,6 @@ func session(session: WCSession,
 ^ Notice the replyHandler. This allows us to send that optional response
 
 
-
----
-# The Networking 
-
-*Demo*
-
-
-
 ---
 # Agenda
 
@@ -282,7 +278,7 @@ func session(session: WCSession,
 - The Demo ✔︎
 - The Watch ✔︎
 - The Motion ✔︎
-- The Networking  ✔︎
+- The Network ✔︎
 - The Next Steps
 
 
@@ -290,7 +286,7 @@ func session(session: WCSession,
 # The Next steps
 
  - ⌚️ Access to the Accelerometer would be lovely
- - ⌚️ Handling the watch turning itself off when twisting
+ - ⌚️ Handling the watch reachability when the screen turns off
  - ⌚️ Putting together an actual UI with element selection/switching
  - 🚀 DeckRocket  (https://github.com/jpsim/DeckRocket)
 
