@@ -31,7 +31,7 @@ slidenumbers: true
 
 ---
 # The Movie
-![left 100%](/Users/everest/dev/MinorityReportWithWatch/Presentation/precog.gif) 
+![left 100%](precog.gif) 
 
 - Precognition
 
@@ -45,17 +45,17 @@ slidenumbers: true
 
 ---
 # The Movie
-![left 40%](/Users/everest/dev/MinorityReportWithWatch/Presentation/tomInACar.jpg) 
+![left fit autoplay mute loop](car.mp4)
 
 - Precognition
-- Cool autonomous cars
+- Robots building robot cars around 2 cops fighting
 
 
 
 
 ---
 # The Movie
-![left 30%](/Users/everest/dev/MinorityReportWithWatch/Presentation/soundgun.jpg) 
+![left fit autoplay mute loop](soundgun.mp4)
 
 - Precognition
 - Cool autonomous cars
@@ -117,13 +117,13 @@ slidenumbers: true
 
 ---
 
-![fill](/Users/everest/dev/MinorityReportWithWatch/Presentation/storyboard.jpg) 
+![fill](storyboard.jpg) 
 
 ^ for watch development you must implement your UI in storyboards. interesting
 
 ---
 
-![100%](/Users/everest/dev/MinorityReportWithWatch/Presentation/watchcontrolpanel.gif) 
+![100%](watchcontrolpanel.gif) 
 
 
 ^ a control panel on the watch
@@ -149,7 +149,7 @@ slidenumbers: true
 ---
 # The Motion (CoreMotion)
 
-![inline 40%](/Users/everest/dev/MinorityReportWithWatch/Presentation/framedx1y0z0.png) ![inline 40%](/Users/everest/dev/MinorityReportWithWatch/Presentation/framedx0y-1z0.png) ![inline 40%](/Users/everest/dev/MinorityReportWithWatch/Presentation/framedx-1y0z0.png) 
+![inline 40%](framedx1y0z0.png) ![inline 40%](framedx0y-1z0.png) ![inline 40%](framedx-1y0z0.png) 
 
 ^normal upright x0y-1z0
 right side down x1y0z0
