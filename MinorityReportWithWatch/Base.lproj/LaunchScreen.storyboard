@@ -24,7 +24,7 @@
                             </label>
                         </subviews>
                         <animations/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="tfa-oo-hc7" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="OZp-TW-ldb"/>
                             <constraint firstItem="tfa-oo-hc7" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" constant="245" id="l1O-av-UFz"/>
