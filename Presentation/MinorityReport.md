@@ -2,10 +2,17 @@ footer: @roderic
 slidenumbers: true
 
 # [fit] Minority Report with a Watch 
+![inline fit autoplay mute loop](trailer.mp4)
+
+^ introduction. co-founder thumbworks. Focusing on iOS development
+
+^ eye contact
+^ hand position
+^ do not be apologetic about delays. "Here are the issues identified, here is how we can resolve it etc"
+^ Stay positive. This is a glimpse of what we can do 
 
 ---
 
-# [fit] Minority Report with a Watch 
 
 ### or how close can we get?
 
@@ -22,16 +29,16 @@ slidenumbers: true
 ^ This is what we are going to talk about
 
 
-
-
-
 ---
 # The Movie
 ![left 100%](/Users/everest/dev/MinorityReportWithWatch/Presentation/precog.gif) 
 
 - Precognition
 
+
 ^ The movie had lots of great things
+90% on RT
+2002
 
 
 
@@ -65,6 +72,8 @@ slidenumbers: true
 - The multitouch, multidiminsional UI
 
 ![left fit autoplay mute loop](ui.mp4)
+
+^ Aaron says that I need to be more concise with the explanation of the movie
 
 ---
 
@@ -113,6 +122,13 @@ slidenumbers: true
 ^ for watch development you must implement your UI in storyboards. interesting
 
 ---
+
+![100%](/Users/everest/dev/MinorityReportWithWatch/Presentation/watchcontrolpanel.gif) 
+
+
+^ a control panel on the watch
+
+---
 # The Watch :watch:
 
  - Access to the Accelerometer
@@ -158,7 +174,7 @@ if (manager.accelerometerAvailable) {
 
 ```
 
-^ This is all new stuff in WatchOS 2, we could not actually do this before. Also note that the gyro and magnetometer are not available
+^ Digging into the code
 
 
 ---
@@ -186,7 +202,9 @@ if(WCSession.isSupported()) {
 
 ```
 
-^ It is this simple because the phone and the watch are paired somewhere below the application layer. No handshake, no auth, just open and go. 
+^ -Talked about this in my blog
+
+^ -Simple, no handshake
 
 
 
@@ -199,7 +217,10 @@ public class WCSession : NSObject {
     public var paired: Bool { get }
     public var reachable: Bool { get }
 
-    public func sendMessage(message: [String : AnyObject], ...
+    public func sendMessage(message: [String : AnyObject], 
+                            replyHandler: (([String : AnyObject]) -> Void)?, 
+                            errorHandler: ((NSError) -> Void)?)
+
     public func updateApplicationContext(applicationContext: [String : AnyObject]) throws
 }
 
@@ -245,7 +266,9 @@ session.sendMessage(message,
 
 ```
 
-^ build message with the motion data. Option to do something with a response. Errors on timeout, not connected, etc
+^ - build message with the data. 
+  - Option to do something with a response. 
+  - Errors on timeout, not connected, etc
 
 
 
@@ -285,10 +308,14 @@ func session(session: WCSession,
 ---
 # The Next steps
 
- - ⌚️ Access to the Accelerometer would be lovely
+ - 📲 Testing shows .2s lag time to send and update the UI 
+ - ⌚️ Access to the gyroscope would be lovely
  - ⌚️ Handling the watch reachability when the screen turns off
  - ⌚️ Putting together an actual UI with element selection/switching
+ - ⌚️ 📱 Putting the watch together with the phone gyro to make entirely new gesture language
  - 🚀 DeckRocket  (https://github.com/jpsim/DeckRocket)
+
+^ - I can send faster than .2s
 
 ---
 
@@ -300,4 +327,11 @@ func session(session: WCSession,
 
  - Scenery 
  -- http://www.getscenery.com
+
+
+# Code Available
+https://github.com/rodericj/MinorityReportWithWatch
+
+
+^ Can I get crown position
 
