@@ -87,6 +87,14 @@ slidenumbers: true
 - The Next Steps
 
 ^ We are not here to talk about movies
+^ Do not show the debug mode yet
+
+---
+
+![100%](watchcontrolpanel.gif) 
+
+
+^ a control panel on the watch
 
 ---
 # The Watch :watch:
@@ -121,12 +129,6 @@ slidenumbers: true
 
 ^ for watch development you must implement your UI in storyboards. interesting
 
----
-
-![100%](watchcontrolpanel.gif) 
-
-
-^ a control panel on the watch
 
 ---
 # The Watch :watch:
@@ -306,7 +308,7 @@ func session(session: WCSession,
 
 
 ---
-# The Next steps
+# The Next Steps
 
  - 📲 Testing shows .2s lag time to send and update the UI 
  - ⌚️ Access to the gyroscope would be lovely
@@ -316,22 +318,20 @@ func session(session: WCSession,
  - 🚀 DeckRocket  (https://github.com/jpsim/DeckRocket)
 
 ^ - I can send faster than .2s
+^ - DeckRocket
 
 ---
 
-# Special Credits
 
+ - Code: *https://github.com/rodericj/MinorityReportWithWatch*
+ - Blog: *http://thumbworks.io*
+ - Contact:  
+  - roderic@thumbworks.io  
+  - @roderic  
+  - *http://github.com/rodericj*
 
- - Philippe Dewost's video Analysis of Minority Report UI 
- --https://vimeo.com/49216050
-
- - Scenery 
- -- http://www.getscenery.com
-
-
-# Code Available
-https://github.com/rodericj/MinorityReportWithWatch
-
+####"Sometimes, in order to see the light, you have to risk the dark."
+####"Goodbye Crow"
 
 ^ Can I get crown position
 
