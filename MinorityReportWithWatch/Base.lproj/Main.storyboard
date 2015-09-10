@@ -94,6 +94,7 @@
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="iUP-lO-gQV" firstAttribute="top" secondItem="Tg9-hB-ZiC" secondAttribute="bottom" constant="5" id="0Ly-DS-e6U"/>
                             <constraint firstItem="iUP-lO-gQV" firstAttribute="centerX" secondItem="Tg9-hB-ZiC" secondAttribute="centerX" id="8IM-Qw-erS"/>
@@ -117,6 +118,9 @@
                             <constraint firstItem="FIf-Nt-N76" firstAttribute="top" secondItem="QYf-zd-kuw" secondAttribute="bottom" constant="10" id="ug1-Oh-nbo"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="RaG-dr-ihY" secondAttribute="trailing" constant="10" id="vkx-if-NZj"/>
                         </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="vkr-Oz-FUa" appends="YES" id="fIN-7g-w9h"/>
+                        </connections>
                     </view>
                     <connections>
                         <outlet property="delayLabel" destination="WRy-3S-flq" id="6I5-eP-9k4"/>
@@ -137,6 +141,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="vkr-Oz-FUa">
+                    <connections>
+                        <action selector="tapHandler:" destination="BYZ-38-t0r" id="eLm-OR-ITr"/>
+                    </connections>
+                </pongPressGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="408" y="337"/>
         </scene>

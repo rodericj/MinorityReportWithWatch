@@ -1,7 +1,7 @@
 footer: @roderic 
 slidenumbers: true
 
-# [fit] Minority Report with a Watch 
+# [fit] Minority Report with an Apple Watch 
 ![inline fit autoplay mute loop](trailer.mp4)
 
 ^ introduction. co-founder thumbworks. Focusing on iOS development
@@ -12,7 +12,6 @@ slidenumbers: true
 ^ Stay positive. This is a glimpse of what we can do 
 
 ---
-
 
 ### or how close can we get?
 
@@ -311,17 +310,21 @@ func session(session: WCSession,
 # The Next Steps
 
  - 📲 Testing shows .2s lag time to send and update the UI 
- - ⌚️ Access to the gyroscope would be lovely
+ - ⌚️ Access to the gyroscope on the watch would be lovely
  - ⌚️ Handling the watch reachability when the screen turns off
- - ⌚️ Putting together an actual UI with element selection/switching
- - ⌚️ 📱 Putting the watch together with the phone gyro to make entirely new gesture language
  - 🚀 DeckRocket  (https://github.com/jpsim/DeckRocket)
 
 ^ - I can send faster than .2s
 ^ - DeckRocket
 
 ---
+# The Next Steps
 
+ - ⌚️ 📱 Entirely new gesture language with the watch and the phone together
+ - ⌚️ Putting together an actual UI with element selection, switching contexts, lists
+ - 📱 3D Touch with the new iPhone 6(+)s
+
+---
 
  - Code: *https://github.com/rodericj/MinorityReportWithWatch*
  - Blog: *http://thumbworks.io*
@@ -330,8 +333,8 @@ func session(session: WCSession,
   - @roderic  
   - *http://github.com/rodericj*
 
-####"Sometimes, in order to see the light, you have to risk the dark."
-####"Goodbye Crow"
+####"Sometimes, in order to see the light, you have to risk the dark." - Dr. Iris Hineman
+####"Goodbye Crow" - John Anderton
 
 ^ Can I get crown position
 

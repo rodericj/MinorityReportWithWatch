@@ -8,6 +8,7 @@
 
 import UIKit
 import WatchConnectivity
+import CoreMotion
 
 class ViewController: UIViewController, WCSessionDelegate {
 
@@ -28,10 +29,19 @@ class ViewController: UIViewController, WCSessionDelegate {
     var rotationSet : Bool
     
     let session : WCSession
-    
+    let manager : CMMotionManager
+    let motionQueue : NSOperationQueue
+
     required init?(coder aDecoder: NSCoder) {
         session = WCSession.defaultSession()
         rotationSet = true
+        
+        motionQueue = NSOperationQueue.mainQueue()
+        
+        manager = CMMotionManager()
+        manager.gyroUpdateInterval = 0.1
+
+        
         super.init(coder: aDecoder)
     }
     
@@ -63,6 +73,27 @@ class ViewController: UIViewController, WCSessionDelegate {
         })
     }
     
+    @IBAction func tapHandler(sender: UIGestureRecognizer) {
+        
+        if (sender.state == .Began){
+            if (manager.gyroAvailable) {
+                
+                manager.startGyroUpdatesToQueue(motionQueue, withHandler: { (data:CMGyroData?, error:NSError?) -> Void in
+                    UIView.animateWithDuration(0.1, delay: 0, options: UIViewAnimationOptions.BeginFromCurrentState, animations: { () -> Void in
+                        let x = CGFloat((data?.rotationRate.x)!)
+                        let y = CGFloat((data?.rotationRate.y)!)
+                        print("x and y are " + String(x) + " " + String(y))
+                        self.howardImageView.transform = CGAffineTransformTranslate(self.howardImageView.transform, -x*100, y*100)
+                        }, completion: nil)
+                })
+            }
+        
+        
+        } else if (sender.state == .Ended) {
+            manager.stopGyroUpdates()
+        }
+    }
+
     func sessionWatchStateDidChange(session: WCSession) {
         print("watch state changed %@", session.paired)
 
