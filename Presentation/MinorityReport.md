@@ -6,11 +6,6 @@ slidenumbers: true
 
 ^ introduction. co-founder thumbworks. Focusing on iOS development
 
-^ eye contact
-^ hand position
-^ do not be apologetic about delays. "Here are the issues identified, here is how we can resolve it etc"
-^ Stay positive. This is a glimpse of what we can do 
-
 ---
 
 ### or how close can we get?
@@ -25,8 +20,6 @@ slidenumbers: true
 - The Network 
 - The Next Steps
 
-^ This is what we are going to talk about
-
 
 ---
 # The Movie
@@ -35,11 +28,9 @@ slidenumbers: true
 - Precognition
 
 
-^ The movie had lots of great things
+^ The movie
 90% on RT
 2002
-
-
 
 
 ---
@@ -72,7 +63,7 @@ slidenumbers: true
 
 ![left fit autoplay mute loop](ui.mp4)
 
-^ Aaron says that I need to be more concise with the explanation of the movie
+^ concise with the explanation of the movie
 
 ---
 
@@ -120,13 +111,11 @@ slidenumbers: true
 - WatchOS 2 opens up a few new things
 - WatchOS 2 developing for the watch should be very familiar
 
-^ along comes watchOS 2. Now we can actually gather data, and then send it over
-
 ---
 
 ![fill](storyboard.jpg) 
 
-^ for watch development you must implement your UI in storyboards. interesting
+^ for watch development you must implement your UI in storyboards
 
 
 ---
